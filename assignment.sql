@@ -8,3 +8,9 @@ select concat(clients.first_name, ' ', clients.last_name) as client_name, sum(bi
 from clients
 join billing on clients.client_id = billing.client_id and clients.client_id = 2
 group by client_name ;
+
+-- 3. What query would you run to get all the sites that client=10 owns?
+select concat(clients.first_name, ' ', clients.last_name) as client_name, sites.domain_name
+from clients
+join sites on clients.client_id = sites.client_id and clients.client_id = 10;
+
