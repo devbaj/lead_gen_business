@@ -51,12 +51,14 @@ order by "# of leads" desc;
 
 
 -- 7. What query would you run to get a list of client names and the total # of leads we've generated for each client each month between months 1 - 6 of Year 2011?
-select concat(clients.first_name, ' ', clients.last_name) as "client name", count(leads.leads_id) as "# of leads"
+select concat(clients.first_name, ' ', clients.last_name) as "client name", count(leads.leads_id) as "# of leads", month(leads.registered_datetime) as "month"
 from clients
 left join sites on clients.client_id = sites.client_id
 join leads on sites.site_id = leads.site_id and leads.registered_datetime >= "2011-01-01" and leads.registered_datetime < "2011-07-01"
-group by "client name"
+group by clients.client_id, month(leads.registered_datetime)
 order by "# of leads" desc;
+	-- problem, answer differs from key
+    -- problem solved, added second grouping condition and added month registered to query
 
 -- 8. What query would you run to get a list of client names and the total # of leads we've generated for each of our clients' sites between January 1, 2011 to December 31, 2011? Order this query by client id.  Come up with a second query that shows all the clients, the site name(s), and the total number of leads generated from each site for all time.
 select clients.client_id, concat(clients.first_name, ' ', clients.last_name) as "client name", count(leads.leads_id) as "# of leads"
