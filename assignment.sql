@@ -28,3 +28,9 @@ join sites on clients.client_id = sites.client_id and clients.client_id = 20
 group by extract(month from sites.created_datetime)
 order by sites.created_datetime asc;
 
+-- 5. What query would you run to get the total # of leads generated for each of the sites between January 1, 2011 to February 15, 2011?
+select count(leads.leads_id) as "# of leads", sites.domain_name, sites.created_datetime
+from sites
+join leads on sites.site_id = leads.site_id and sites.created_datetime >= "2011-01-01" and sites.created_datetime <= "2011-02-15"
+group by sites.domain_name ;
+
