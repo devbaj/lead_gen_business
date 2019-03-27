@@ -64,3 +64,10 @@ order by clients.client_id desc;
     join leads on sites.site_id = leads.site_id
     group by sites.domain_name;
     
+-- 9. Write a single query that retrieves total revenue collected from each client for each month of the year. Order it by client id.
+select clients.client_id, SUM(billing.amount) as revenue, extract(month from billing.charged_datetime) as "month"
+from clients
+join billing on clients.client_id = billing.client_id
+group by clients.client_id, extract(month from billing.charged_datetime)
+order by clients.client_id asc, extract(month from billing.charged_datetime) asc;
+
