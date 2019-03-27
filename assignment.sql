@@ -25,17 +25,19 @@ order by month(sites.created_datetime) asc;
     -- error corrected, I was only grouping by month, not month and year
 
 	-- For client 20
-select clients.client_id, count(sites.site_id) as sites_created, extract(month from sites.created_datetime) as "month", extract(year from sites.created_datetime) as "year"
+select clients.client_id, count(sites.site_id) as sites_created, month(sites.created_datetime) as "month", year(sites.created_datetime) as "year"
 from clients
 join sites on clients.client_id = sites.client_id and clients.client_id = 20
-group by extract(month from sites.created_datetime)
-order by sites.created_datetime asc;
+group by month(sites.created_datetime), year(sites.created_datetime)
+order by month(sites.created_datetime) asc;
 
 -- 5. What query would you run to get the total # of leads generated for each of the sites between January 1, 2011 to February 15, 2011?
-select count(leads.leads_id) as "# of leads", sites.domain_name, sites.created_datetime
+select count(leads.leads_id) as "# of leads", sites.domain_name, leads.registered_datetime
 from sites
-join leads on sites.site_id = leads.site_id and sites.created_datetime >= "2011-01-01" and sites.created_datetime <= "2011-02-15"
-group by sites.domain_name ;
+join leads on sites.site_id = leads.site_id and leads.registered_datetime >= "2011-01-01" and leads.registered_datetime <= "2011-02-15"
+group by sites.domain_name;
+	-- there is a problem, we got a different answer than the answer key
+    -- problem resolved, I was querying sites.created_datetime instead of leads.registered_datetime
 
 -- 6. What query would you run to get a list of client names and the total # of leads we've generated for each of our clients between January 1, 2011 to December 31, 2011?
 select concat(clients.first_name, ' ', clients.last_name) as "client name", count(leads.leads_id) as "# of leads"
