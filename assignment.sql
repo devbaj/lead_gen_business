@@ -14,3 +14,17 @@ select concat(clients.first_name, ' ', clients.last_name) as client_name, sites.
 from clients
 join sites on clients.client_id = sites.client_id and clients.client_id = 10;
 
+-- 4. What query would you run to get total # of sites created per month per year for the client with an id of 1? What about for client=20?
+	-- For client id 1
+select clients.client_id, count(sites.site_id) as sites_created, extract(month from sites.created_datetime) as "month", extract(year from sites.created_datetime) as "year"
+from clients
+join sites on clients.client_id = sites.client_id and clients.client_id = 1
+group by extract(month from sites.created_datetime)
+order by sites.created_datetime asc;
+	-- For client 20
+select clients.client_id, count(sites.site_id) as sites_created, extract(month from sites.created_datetime) as "month", extract(year from sites.created_datetime) as "year"
+from clients
+join sites on clients.client_id = sites.client_id and clients.client_id = 20
+group by extract(month from sites.created_datetime)
+order by sites.created_datetime asc;
+
