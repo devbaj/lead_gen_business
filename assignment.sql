@@ -88,7 +88,9 @@ order by clients.client_id asc, month(billing.charged_datetime) asc, year(billin
     -- resolved, added client name query and ordering by year as our 3 criterion
 
 -- 10. Write a single query that retrieves all the sites that each client owns. Group the results so that each row shows a new client. It will become clearer when you add a new field called 'sites' that has all the sites that the client owns. (HINT: use GROUP_CONCAT)
-select clients.client_id, concat(clients.first_name, ' ', clients.last_name) as "client", group_concat(' ', sites.domain_name)
+select clients.client_id, concat(clients.first_name, ' ', clients.last_name) as "client_name", group_concat(' ', sites.domain_name) as "sites"
 from clients
-join sites on clients.client_id = sites.client_id
+left join sites on clients.client_id = sites.client_id
 group by clients.client_id;
+	-- answer differs, missing 2 rows
+    -- resolved, there are 2 clients with no sites, so changing our join to a left join adds those two clients to our query
